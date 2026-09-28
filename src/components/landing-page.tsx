@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   BarChart3,
   Bell,
@@ -21,8 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-const APK_HREF = "/nodus.apk";
-const SITE = "nodus.app";
+const SITE = "nodusapp.app";
 const PHONE_DISPLAY = "+58 412 856 2043";
 const PHONE_TEL = "+584128562043";
 
@@ -59,16 +58,12 @@ function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 }
 
-function isAndroid() {
-  return /Android/i.test(navigator.userAgent);
-}
-
 function sanitizeSlug(raw: string) {
   return raw
     .trim()
     .toLowerCase()
     .replace(/^https?:\/\//, "")
-    .replace(/\.nodus\.app.*$/, "")
+    .replace(/\.nodusapp\.app.*$/, "")
     .replace(/[^a-z0-9-]/g, "")
     .slice(0, 48);
 }
@@ -77,15 +72,6 @@ export function LandingPage() {
   const [enterOpen, setEnterOpen] = useState(false);
 
   function handleInstall() {
-    if (isAndroid()) {
-      const link = document.createElement("a");
-      link.href = APK_HREF;
-      link.download = "nodus.apk";
-      document.body.append(link);
-      link.click();
-      link.remove();
-      return;
-    }
     scrollToId("instalar");
   }
 
@@ -104,7 +90,12 @@ export function LandingPage() {
             <NodusLogo />
           </a>
           <div className="flex items-center gap-2">
-            <Button variant="secondary" size="md" onClick={handleInstall}>
+            <Button
+              variant="secondary"
+              size="md"
+              className="hidden sm:inline-flex"
+              onClick={handleInstall}
+            >
               Instalar
             </Button>
             <Button variant="ghost" size="md" onClick={() => setEnterOpen(true)}>
@@ -129,6 +120,53 @@ export function LandingPage() {
   );
 }
 
+function ProductMock() {
+  const groups = [
+    { name: "Casa de Luz", count: "32" },
+    { name: "Jóvenes", count: "18" },
+    { name: "Intercesión", count: "11" },
+  ];
+
+  return (
+    <div className="stagger-in relative mx-auto w-full max-w-[17.5rem] shrink-0 lg:mx-0">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-10 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgb(0 212 255 / 0.08), transparent 68%)",
+        }}
+      />
+      <div className="rounded-xl border border-border bg-bg p-2.5 shadow-[var(--shadow-border)]">
+        <div className="overflow-hidden rounded-lg bg-surface">
+          <div className="flex items-center justify-between px-4 pt-3 text-sm font-normal text-muted">
+            <span>9:41</span>
+            <span className="h-1.5 w-12 rounded-full bg-elevated" />
+          </div>
+          <div className="px-4 pt-4">
+            <NodusLogo markClassName="size-5" className="text-sm" />
+          </div>
+          <p className="px-4 pt-5 font-sans text-sm font-medium text-fg">Hoy</p>
+          <ul className="mt-3 flex flex-col gap-2 px-4">
+            {groups.map((group) => (
+              <li
+                key={group.name}
+                className="flex items-center justify-between rounded-md bg-elevated px-3 py-2.5"
+              >
+                <span className="text-sm font-normal text-fg">{group.name}</span>
+                <span className="text-sm font-medium text-accent">{group.count}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="px-4 py-5 text-center text-sm font-normal text-muted">
+            Asistencia · Organigrama · Avisos
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Hero({
   onInstall,
   onEnter,
@@ -142,38 +180,64 @@ function Hero({
       className="hero-wash border-b border-border"
       aria-labelledby="frase"
     >
-      <div className="page-wrap flex flex-col items-start gap-8 py-16 sm:py-24 lg:py-32">
-        <div className="stagger-in flex items-center gap-3 text-muted">
-          <NodusMark className="size-10 sm:size-12" />
-          <span className="font-display text-sm font-medium tracking-wide text-fg sm:text-base">
-            Nodus
-          </span>
-        </div>
-        <h1
-          id="frase"
-          className="stagger-in max-w-3xl font-display text-hero font-medium tracking-tight text-fg"
-        >
-          Organiza tu congregación con claridad
-        </h1>
-        <div className="stagger-in flex w-full max-w-md flex-col gap-3 sm:flex-row">
-          <Button size="xl" className="w-full sm:w-auto" onClick={onInstall}>
-            Instalar Nodus
-          </Button>
-          <Button
-            size="xl"
-            variant="secondary"
-            className="w-full sm:w-auto"
-            onClick={onEnter}
+      <div className="page-wrap flex flex-col items-start gap-10 py-16 sm:py-24 lg:flex-row lg:items-center lg:justify-between lg:gap-16 lg:py-32">
+        <div className="flex w-full min-w-0 flex-col items-start gap-8 lg:max-w-xl">
+          <div className="stagger-in flex items-center gap-3 text-muted">
+            <NodusMark className="size-10 sm:size-12" />
+            <span className="font-display text-sm font-medium tracking-wide text-fg sm:text-base">
+              Nodus
+            </span>
+          </div>
+          <h1
+            id="frase"
+            className="stagger-in max-w-3xl font-display text-hero font-medium tracking-tight text-fg"
           >
-            Entrar
-          </Button>
+            Organiza tu congregación con claridad
+          </h1>
+          <div className="stagger-in flex w-full max-w-md flex-col gap-3 sm:flex-row">
+            <Button size="xl" className="w-full sm:w-auto" onClick={onInstall}>
+              Instalar Nodus
+            </Button>
+            <Button
+              size="xl"
+              variant="secondary"
+              className="w-full sm:w-auto"
+              onClick={onEnter}
+            >
+              Entrar
+            </Button>
+          </div>
         </div>
+        <ProductMock />
       </div>
     </section>
   );
 }
 
 function Problem() {
+  const listRef = useRef<HTMLOListElement>(null);
+  const [phase, setPhase] = useState<"idle" | "armed" | "shown">("idle");
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPhase("shown");
+      return;
+    }
+    setPhase("armed");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setPhase("shown");
+        observer.disconnect();
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       id="problema"
@@ -187,13 +251,20 @@ function Problem() {
         >
           Lo que se pierde entre mensajes
         </h2>
-        <ol className="flex flex-col gap-6">
+        <ol ref={listRef} className="flex flex-col gap-6">
           {PROBLEMS.map((line, i) => (
-            <li key={line} className="flex gap-4">
-              <span className="font-display text-sm font-medium text-accent">
+            <li
+              key={line}
+              className={cn(
+                "line-reveal flex gap-4",
+                phase === "armed" && "is-armed",
+                phase === "shown" && "is-shown",
+              )}
+            >
+              <span className="font-sans text-sm font-medium text-accent">
                 0{i + 1}
               </span>
-              <p className="text-lead text-muted">{line}</p>
+              <p className="text-lead font-normal text-muted">{line}</p>
             </li>
           ))}
         </ol>
@@ -224,10 +295,10 @@ function Modules() {
                 strokeWidth={1.6}
                 aria-hidden="true"
               />
-              <h3 className="font-display text-base font-medium tracking-tight">
+              <h3 className="font-sans text-base font-medium tracking-tight">
                 {mod.title}
               </h3>
-              <p className="mt-2 max-w-sm text-sm leading-normal text-muted">
+              <p className="mt-2 max-w-sm text-sm font-normal leading-normal text-muted">
                 {mod.body}
               </p>
             </li>
@@ -252,7 +323,7 @@ function Install() {
         >
           Cómo se instala
         </h2>
-        <p className="mb-10 max-w-xl text-lead text-muted">
+        <p className="mb-10 max-w-xl text-lead font-normal text-muted">
           Sin tiendas. En Android se descarga el APK. En iPhone, iPad y tablet se
           agrega a la pantalla de inicio.
         </p>
@@ -261,25 +332,20 @@ function Install() {
           <article className="rounded-xl bg-surface p-6 shadow-[var(--shadow-border)] sm:p-8">
             <div className="mb-5 flex items-center gap-3">
               <Smartphone className="size-5 text-accent" strokeWidth={1.6} />
-              <h3 className="font-display text-base font-medium">Android</h3>
+              <h3 className="font-sans text-base font-medium">Android</h3>
             </div>
-            <p className="mb-6 text-sm leading-normal text-muted">
-              Descarga el APK desde nodus.app e instálalo en tu teléfono. Si el
+            <p className="text-sm font-normal leading-normal text-muted">
+              Descarga el APK desde nodusapp.app e instálalo en tu teléfono. Si el
               sistema pregunta, permite instalar desde este origen.
             </p>
-            <Button asChild className="w-full sm:w-auto">
-              <a href={APK_HREF} download="nodus.apk">
-                Descargar APK
-              </a>
-            </Button>
           </article>
 
           <article className="rounded-xl bg-surface p-6 shadow-[var(--shadow-border)] sm:p-8">
             <div className="mb-5 flex items-center gap-3">
               <Tablet className="size-5 text-accent" strokeWidth={1.6} />
-              <h3 className="font-display text-base font-medium">iOS y tablet</h3>
+              <h3 className="font-sans text-base font-medium">iOS y tablet</h3>
             </div>
-            <p className="mb-6 text-sm leading-normal text-muted">
+            <p className="mb-6 text-sm font-normal leading-normal text-muted">
               Nodus es una PWA. No se instala desde una tienda: se agrega a la
               pantalla de inicio, en tres pasos.
             </p>
@@ -290,8 +356,8 @@ function Install() {
                     <step.icon className="size-4" strokeWidth={1.75} />
                   </span>
                   <div>
-                    <p className="text-sm font-medium text-fg">{step.title}</p>
-                    <p className="mt-1 text-sm leading-normal text-muted">
+                    <p className="font-sans text-sm font-medium text-fg">{step.title}</p>
+                    <p className="mt-1 text-sm font-normal leading-normal text-muted">
                       {step.body}
                     </p>
                   </div>
@@ -313,11 +379,11 @@ function Trust() {
           <h2 className="font-display text-section font-medium tracking-tight">
             Cada iglesia, su espacio
           </h2>
-          <p className="mt-4 max-w-md text-lead text-muted">
+          <p className="mt-4 max-w-md text-lead font-normal text-muted">
             Cada congregación vive en su propio subdominio. Espacio propio,
             datos separados: nada se mezcla con otra iglesia.
           </p>
-          <p className="mt-6 inline-flex items-baseline gap-0 rounded-md bg-elevated px-4 py-3 font-display text-sm tracking-wide text-fg">
+          <p className="mt-6 inline-flex items-baseline gap-0 rounded-md bg-elevated px-4 py-3 font-sans text-sm font-normal tracking-wide text-fg">
             <span className="text-accent">tu-iglesia</span>
             <span className="text-muted">.{SITE}</span>
           </p>
@@ -327,7 +393,7 @@ function Trust() {
           <h2 className="font-display text-section font-medium tracking-tight">
             Privacidad por congregación
           </h2>
-          <p className="mt-4 max-w-md text-lead text-muted">
+          <p className="mt-4 max-w-md text-lead font-normal text-muted">
             Cada congregación controla su información. Los registros, avisos y
             reportes pertenecen a esa iglesia y no se comparten entre espacios.
           </p>
@@ -374,7 +440,6 @@ function SiteFooter() {
         </a>
       ),
     },
-    { key: "rif", node: "RIF: —" },
   ];
 
   return (
@@ -441,7 +506,7 @@ function EnterDialog({
               inputMode="url"
             />
           </label>
-          <p className="font-display text-xs tracking-wide text-muted">
+          <p className="font-sans text-sm font-normal tracking-wide text-muted">
             {slug ? (
               <>
                 <span className="text-accent">{slug}</span>
@@ -501,7 +566,7 @@ const PWA_STEPS = [
   {
     n: "01",
     title: "Abre Safari",
-    body: "Entra a nodus.app desde Safari en tu iPhone, iPad o tablet.",
+    body: "Entra a nodusapp.app desde Safari en tu iPhone, iPad o tablet.",
     icon: SafariMark,
   },
   {
