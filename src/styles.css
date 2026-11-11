@@ -11,6 +11,7 @@
   --color-accent-fg: #041018;
   --color-border: #22222e;
   --color-ring: #00d4ff;
+  --color-warm: #ff8c00;
 
   --font-sans: "Rajdhani", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
@@ -168,5 +169,527 @@
   .line-reveal.is-shown {
     opacity: 1;
     transform: none;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: 8% 0 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(closest-side at 50% 45%, rgb(0 212 255 / 0.22), transparent 70%),
+      radial-gradient(closest-side at 70% 70%, rgb(255 140 0 / 0.14), transparent 70%);
+    filter: blur(8px);
+  }
+
+  .phone-frame {
+    margin: 0;
+    padding: 6px;
+    border-radius: 1.75rem;
+    background: linear-gradient(160deg, #2a2a36, #14141c 60%);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.09),
+      0 30px 60px -20px rgb(0 0 0 / 0.8);
+    overflow: hidden;
+  }
+  .phone-frame img {
+    border-radius: 1.35rem;
+  }
+  .phone-side {
+    position: relative;
+    margin-top: 2.5rem;
+    opacity: 0.8;
+  }
+
+  .modulos-rail {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0.25rem max(1.25rem, calc((100% - 68rem) / 2)) 1rem;
+    scroll-padding-inline: max(1.25rem, calc((100% - 68rem) / 2));
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+  .modulo-card {
+    flex: 0 0 min(78%, 17rem);
+    scroll-snap-align: start;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-border);
+  }
+  .modulo-shot {
+    height: 19rem;
+    overflow: hidden;
+    padding: 1.25rem 1.5rem 0;
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 0%, rgb(0 212 255 / 0.12), transparent 70%),
+      var(--color-elevated);
+    -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent);
+    mask-image: linear-gradient(180deg, #000 78%, transparent);
+  }
+  @media (min-width: 1024px) {
+    .modulos-rail {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      overflow: visible;
+      margin-inline: auto;
+      width: min(100% - 2.5rem, 68rem);
+      padding: 0;
+    }
+    .modulo-shot {
+      padding-inline: 1rem;
+      height: 17rem;
+    }
+  }
+
+  .cta-wash {
+    background:
+      radial-gradient(ellipse 60% 70% at 50% 100%, rgb(0 212 255 / 0.1), transparent 70%),
+      radial-gradient(ellipse 40% 50% at 50% 100%, rgb(255 140 0 / 0.08), transparent 70%);
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-elevated) 0%, #22222e 50%, var(--color-elevated) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s linear infinite;
+  }
+
+  /* Tutorial de instalación */
+  .tabs {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-border);
+  }
+  .tab {
+    min-height: 2.75rem;
+    padding-inline: 1.25rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    color: var(--color-muted);
+    transition: background-color 150ms, color 150ms, box-shadow 150ms;
+  }
+  .tab:hover {
+    color: var(--color-fg);
+  }
+  .tab.is-active {
+    background: var(--color-elevated);
+    color: var(--color-fg);
+    box-shadow: var(--shadow-accent);
+  }
+  .paso {
+    display: flex;
+    width: 100%;
+    min-height: 4rem;
+    align-items: center;
+    gap: 1rem;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 0.875rem;
+    transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  .paso:hover {
+    background: var(--color-surface);
+  }
+  .paso.is-active {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-accent);
+  }
+  .paso-n {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--color-elevated);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    transition: background-color 200ms, color 200ms;
+  }
+  .paso.is-done .paso-n {
+    color: var(--color-accent);
+  }
+  .paso.is-active .paso-n {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+
+  .tut-phone {
+    width: 264px;
+    padding: 8px;
+    border-radius: 2.4rem;
+    background: linear-gradient(160deg, #2c2c38, #121219 60%);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.1),
+      0 40px 80px -30px rgb(0 212 255 / 0.25),
+      0 30px 60px -20px rgb(0 0 0 / 0.9);
+  }
+  .tut-screen {
+    position: relative;
+    width: 248px;
+    height: 528px;
+    overflow: hidden;
+    border-radius: 1.9rem;
+    background: #000;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 12.5px;
+    color: #e6e6ee;
+  }
+  .tut-page {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
+  }
+  .tut-page.is-hidden {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  .tut-shot {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .tut-bar-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 60px;
+    padding: 20px 6px 0 10px;
+    background: #1f1f27;
+  }
+  .tut-url {
+    display: inline-flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 32px;
+    border-radius: 999px;
+    background: #2c2c36;
+    font-size: 11.5px;
+    color: #c8c8d4;
+    transition: box-shadow 250ms;
+  }
+  .tut-kebab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: 28px;
+    height: 32px;
+    border-radius: 8px;
+    transition: box-shadow 250ms;
+  }
+  .tut-kebab i {
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: #d4d4de;
+  }
+  .is-hot {
+    box-shadow: 0 0 0 2px var(--color-accent);
+  }
+  .tut-bar-bottom {
+    padding: 8px 10px;
+    background: rgb(30 30 38 / 0.96);
+  }
+  .tut-bar-bottom .tut-url {
+    display: flex;
+    height: 34px;
+    border-radius: 12px;
+  }
+  .tut-toolbar {
+    display: flex;
+    height: 36px;
+    margin-top: 6px;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 8px;
+    color: #4aa8ff;
+  }
+  .tut-share {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    transition: box-shadow 250ms;
+  }
+  .tut-menu {
+    position: absolute;
+    top: 24px;
+    right: 6px;
+    width: 160px;
+    padding: 6px 0;
+    border-radius: 12px;
+    background: #2a2a33;
+    box-shadow: 0 12px 30px rgb(0 0 0 / 0.6);
+    opacity: 0;
+    transform: scale(0.85);
+    transform-origin: top right;
+    transition: opacity 250ms var(--ease-out), transform 250ms var(--ease-out);
+  }
+  .tut-menu.is-open {
+    opacity: 1;
+    transform: none;
+  }
+  .tut-menu > span,
+  .tut-sheet > span:not(.tut-grab) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tut-menu > span {
+    height: 34px;
+    padding-inline: 12px;
+  }
+  .is-target {
+    background: rgb(0 212 255 / 0.16);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .tut-sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 220px;
+    border-radius: 16px 16px 0 0;
+    background: #1c1c22;
+    box-shadow: 0 -10px 30px rgb(0 0 0 / 0.5);
+    transform: translateY(100%);
+    transition: transform 350ms var(--ease-out);
+  }
+  .tut-sheet.is-open {
+    transform: none;
+  }
+  .tut-grab {
+    display: block;
+    width: 36px;
+    height: 5px;
+    margin: 6px auto 5px;
+    border-radius: 999px;
+    background: #4a4a55;
+  }
+  .tut-sheet > span:not(.tut-grab) {
+    height: 40px;
+    padding-inline: 16px;
+    border-bottom: 1px solid #2a2a33;
+  }
+  .tut-dialog {
+    position: absolute;
+    left: 24px;
+    top: 178px;
+    width: 200px;
+    height: 172px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 18px;
+    border-radius: 20px;
+    background: #2a2a33;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    transition: opacity 250ms var(--ease-out), transform 250ms var(--ease-out), box-shadow 250ms;
+  }
+  .tut-dialog.is-open {
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 0 0 600px rgb(0 0 0 / 0.55);
+  }
+  .tut-dialog b {
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .tut-dialog small {
+    color: #a0a0ae;
+    font-size: 11px;
+  }
+  .tut-dialog-btns {
+    display: flex;
+    width: 100%;
+    margin-top: auto;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .tut-dialog-btns span {
+    display: grid;
+    place-items: center;
+    height: 30px;
+    padding-inline: 12px;
+    border-radius: 999px;
+    color: var(--color-accent);
+  }
+  .tut-dialog-btns .is-target {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+  .tut-dialog.is-ios {
+    left: 8px;
+    top: 30px;
+    width: 232px;
+    height: 150px;
+    padding: 0;
+    align-items: stretch;
+    border-radius: 14px;
+    background: #1c1c22;
+    text-align: left;
+  }
+  .tut-dialog-head {
+    display: flex;
+    height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding-inline: 10px;
+    border-bottom: 1px solid #2a2a33;
+  }
+  .tut-dialog-head b {
+    margin: 0;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .tut-dialog-head > span {
+    font-size: 12px;
+  }
+  .tut-add {
+    padding: 4px 8px;
+    border-radius: 8px;
+  }
+  .tut-dialog-app {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 14px 12px;
+  }
+  .tut-dialog-app img {
+    border-radius: 11px;
+  }
+  .tut-dialog-app span {
+    display: flex;
+    flex-direction: column;
+  }
+  .tut-home {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgb(0 212 255 / 0.35), transparent 60%),
+      radial-gradient(ellipse 80% 60% at 90% 90%, rgb(255 140 0 / 0.3), transparent 60%),
+      #0d1020;
+    opacity: 0;
+    transition: opacity 450ms var(--ease-out);
+  }
+  .tut-home.is-open {
+    opacity: 1;
+  }
+  .tut-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 18px;
+    padding: 60px 14px 0;
+  }
+  .tut-app {
+    width: 44px;
+    height: 44px;
+    justify-self: center;
+    border-radius: 12px;
+    background: rgb(255 255 255 / 0.14);
+  }
+  .tut-app.is-nodus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    height: auto;
+    background: none;
+    transform: scale(0);
+  }
+  .tut-app.is-nodus img {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+  .tut-app.is-nodus small {
+    font-size: 10px;
+    color: #fff;
+  }
+  .tut-home.is-open .is-nodus {
+    animation: pop-in 600ms 350ms var(--ease-smooth-out) forwards;
+  }
+  .tut-tap {
+    position: absolute;
+    left: 110px;
+    top: 40px;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border-radius: 999px;
+    border: 2px solid var(--color-accent);
+    background: rgb(0 212 255 / 0.2);
+    pointer-events: none;
+    transition: left 500ms var(--ease-out), top 500ms var(--ease-out);
+    animation: tap 1.4s var(--ease-out) infinite;
+  }
+  .at-android-0 { left: 124px; top: 40px; }
+  .at-android-1 { left: 226px; top: 40px; }
+  .at-android-2 { left: 150px; top: 149px; }
+  .at-android-3 { left: 176px; top: 317px; }
+  .at-android-4, .at-ios-4 { left: 206px; top: 206px; }
+  .at-ios-0 { left: 124px; top: 461px; }
+  .at-ios-1 { left: 124px; top: 502px; }
+  .at-ios-2 { left: 124px; top: 424px; }
+  .at-ios-3 { left: 206px; top: 52px; }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes tap {
+  0% { transform: scale(0.8); opacity: 1; }
+  60% { transform: scale(1.25); opacity: 0.35; }
+  100% { transform: scale(0.8); opacity: 1; }
+}
+@keyframes pop-in {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tut-tap,
+  .skeleton {
+    animation: none;
+  }
+  .tut-app.is-nodus {
+    transform: none;
+  }
+  .tut-home.is-open .is-nodus {
+    animation: none;
   }
 }
