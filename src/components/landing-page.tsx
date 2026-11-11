@@ -66,6 +66,20 @@ const MODULOS = [
     img: "/capturas/red.webp",
     color: "#00D4FF",
   },
+  {
+    id: "cuidado",
+    titulo: "Cuidado Pastoral",
+    texto: "Pedir oración, agendar una cita o contactar un ministerio, con respuesta de la casa.",
+    img: "/capturas/cuidado.webp",
+    color: "#FF8C00",
+  },
+  {
+    id: "mapa",
+    titulo: "Mapa de Territorios",
+    texto: "Cada red demarca la zona que trabaja; los pastores la revisan y aprueban.",
+    img: "/capturas/mapa.webp",
+    color: "#00D4FF",
+  },
 ] as const;
 
 function scrollToId(id: string) {
@@ -216,10 +230,10 @@ function Modulos() {
       <div className="page-wrap">
         <p className="eyebrow">Lo que hay adentro</p>
         <h2 id="modulos-titulo" className="mt-3 font-display text-section font-medium tracking-tight">
-          Cinco módulos, una sola red
+          Siete módulos, una sola red
         </h2>
         <p className="mt-4 max-w-xl text-lead text-muted">
-          Capturas reales de la app. Los nombres son de ejemplo.
+          Capturas reales de la app.
         </p>
       </div>
       <ul className="modulos-rail page-wrap-rail mt-10" aria-label="Módulos de Nodus">
@@ -237,6 +251,27 @@ function Modulos() {
             </div>
           </li>
         ))}
+        <li className="modulo-card">
+          <div className="modulo-shot is-collage">
+            <img
+              src="/capturas/mas-funciones.webp"
+              alt="Asistencia, Altar Familiar, Ministerios y Nuevos convertidos en Nodus"
+              width={540}
+              height={720}
+              loading="lazy"
+              decoding="async"
+              className="block h-full w-full object-cover object-top"
+            />
+          </div>
+          <div className="p-5">
+            <h3 className="flex items-center gap-2 font-sans text-lg font-semibold tracking-tight">
+              <span aria-hidden="true" className="size-2 rounded-full bg-fg" />Y muchas funciones más
+            </h3>
+            <p className="mt-1.5 text-[0.95rem] leading-normal text-muted">
+              Asistencia, Altar Familiar, Ministerios, Nuevos convertidos, avisos y reportes.
+            </p>
+          </div>
+        </li>
       </ul>
     </section>
   );
@@ -275,7 +310,10 @@ function SiteFooter() {
             {SITE}
           </a>
         </span>
-        <p>{lineaCopyright()}</p>
+        <p className="flex flex-col gap-0.5 sm:items-end">
+          <span>{lineaCopyright()}</span>
+          <span className="text-subtle">Desarrollado por Abraham J. Magrini</span>
+        </p>
       </div>
     </footer>
   );

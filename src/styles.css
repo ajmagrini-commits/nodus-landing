@@ -240,10 +240,13 @@
     -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent);
     mask-image: linear-gradient(180deg, #000 78%, transparent);
   }
+  .modulo-shot.is-collage {
+    padding: 0;
+  }
   @media (min-width: 1024px) {
     .modulos-rail {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       overflow: visible;
       margin-inline: auto;
       width: min(100% - 2.5rem, 68rem);
