@@ -16,9 +16,11 @@ const SHARE_META_KEYS = new Set([
   "og:image",
   "og:image:width",
   "og:image:height",
+  "og:image:alt",
   "og:type",
   "og:url",
   "og:site_name",
+  "og:locale",
   "twitter:card",
   "twitter:title",
   "twitter:image",
@@ -254,6 +256,8 @@ export function readOgSite(cwd = process.cwd()) {
 
 /** Public path of an on-disk share card, or "" if neither file exists. */
 export function ogCardPublicPath(cwd = process.cwd()) {
+  // Versioned cards first so a cache-busting rename (og-v3.jpg) wins over og.jpg.
+  if (existsSync(join(cwd, "public/og-v3.jpg"))) return "/og-v3.jpg";
   if (existsSync(join(cwd, "public/og.jpg"))) return "/og.jpg";
   if (existsSync(join(cwd, "public/og.png"))) return "/og.png";
   return "";
@@ -364,6 +368,21 @@ export function grokOgHeadTags({
     tags.push(`<meta property="og:image" content="${escapeHtml(image)}">`);
     tags.push(`<meta property="og:image:width" content="1200">`);
     tags.push(`<meta property="og:image:height" content="630">`);
+    const imageAlt = String(site.image_alt ?? site.imageAlt ?? "").trim();
+    if (imageAlt) {
+      tags.push(`<meta property="og:image:alt" content="${escapeHtml(imageAlt)}">`);
+    }
+    tags.push(`<meta name="twitter:image" content="${escapeHtml(image)}">`);
+    const siteUrl = String(site.url ?? "").trim() || `https://${publicHost}`;
+    tags.push(`<meta property="og:url" content="${escapeHtml(siteUrl)}">`);
+    const siteName = String(site.site_name ?? site.siteName ?? title).trim();
+    if (siteName) {
+      tags.push(`<meta property="og:site_name" content="${escapeHtml(siteName)}">`);
+    }
+    const locale = String(site.locale ?? "").trim();
+    if (locale) {
+      tags.push(`<meta property="og:locale" content="${escapeHtml(locale)}">`);
+    }
     const banner = String(site.banner ?? "").trim();
     if (banner) {
       const bannerUrl = `https://${publicHost}${banner.startsWith("/") ? banner : `/${banner}`}`;

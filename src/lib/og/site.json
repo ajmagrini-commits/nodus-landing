@@ -2,5 +2,10 @@
   "title": "Nodus",
   "card": "custom",
   "color": "00D4FF",
-  "description": "Ruta al Éxito, Encuentros, ESFORDI, Discipulado y la Red de tu congregación, en una sola app."
+  "description": "Ruta al Éxito, Encuentros, ESFORDI, Discipulado y la Red de tu congregación, en una sola app.",
+  "image": "/og-v3.jpg",
+  "site_name": "Nodus",
+  "locale": "es_ES",
+  "image_alt": "Nodus — Toda tu red, en la palma de tu mano",
+  "url": "https://www.nodusapp.app"
 }
